@@ -2,6 +2,8 @@
 #include <fstream>
 #include <string>
 
+#include "Scanner.h"
+
 using namespace std;
 
 void report_error(int line, string msg)
@@ -33,17 +35,19 @@ int main(int argc, char **argv)
 		while(getline(cin, row))
 		{
 			scanner.scanTokens(row);
+			hadError = false;
 			cout << ">>> ";
 		}
 	}
 	else if(argc == 2)
 	{
 		ifstream sourceFile(argv[1]);
-		stringstream buffer;
+		string row;
 		
-		buffer << t.rdbug();
+		while(getline(sourceFile, row))
+			scanner.scanTokens(row);
 
-		scanner.scanTokens(buffer);
+		sourceFile.close();
 	}
 
 	if(hadError)
